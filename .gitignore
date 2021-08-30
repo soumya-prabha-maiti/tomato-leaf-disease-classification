@@ -1,0 +1,7 @@
+env/
+.ipynb_checkpoints/
+.vscode/
+dataset/
+*.png
+Tomato_disease_prediction_model_ver1_inception.h5
+*.ipynb
