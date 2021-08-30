@@ -5,4 +5,3 @@ envcopyfromcotton/
 dataset/
 uploads/*.jpg
 README.md
-*.ipynb
