@@ -56,10 +56,10 @@ There are 10000 traininig images and 1000 test images belonging to 10 classes.
 The model was trained with the EarlyStopping callback. It achieved anaccuracy of around 82% on the validation set
 
 
-Plot of loss vs epochs:
+Plot of loss vs epochs:<br>
 ![](images/loss.png)
 
-Plot of accuracy vs epochs:
+Plot of accuracy vs epochs:<br>
 ![](images/accuracy.png)
 
 
