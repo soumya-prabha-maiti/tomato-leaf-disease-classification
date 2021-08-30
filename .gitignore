@@ -4,5 +4,5 @@ envcopyfromcotton/
 .vscode/
 dataset/
 uploads/*.jpg
-*.png
 README.md
+*.ipynb
