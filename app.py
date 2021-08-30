@@ -58,13 +58,13 @@ def model_predict(img_path, model):
     elif preds==4:
         preds="Septoria leaf spot"
     elif preds==5:
-        preds="Spider mites Two-spotted spider mite"
+        preds="Spider mites"
     elif preds==6:
         preds="Target spot"
     elif preds==7:
-        preds="Tomato Yellow Leaf Curl Virus"
+        preds="Yellow leaf curl virus"
     elif preds==8:
-        preds="Tomato mosaic virus"
+        preds="Mosaic virus"
     else:
         preds="Healthy"
     return preds
