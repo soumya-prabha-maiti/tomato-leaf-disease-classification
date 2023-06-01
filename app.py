@@ -1,32 +1,26 @@
-from __future__ import division, print_function
-import sys
-import os
 import glob
+import os
 import re
-import numpy as np
-import tensorflow as tf
+import sys
 
-from tensorflow.compat.v1 import ConfigProto
-from tensorflow.compat.v1 import InteractiveSession
+import numpy as np
+from flask import Flask, jsonify, redirect, render_template, request, url_for
+from tensorflow.compat.v1 import ConfigProto, InteractiveSession
+from tensorflow.keras.applications.resnet50 import preprocess_input
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+from werkzeug.utils import secure_filename
 
 config = ConfigProto()
 config.gpu_options.per_process_gpu_memory_fraction = 0.2
 config.gpu_options.allow_growth = True
 session = InteractiveSession(config=config)
-# Keras
-from tensorflow.keras.applications.resnet50 import preprocess_input
-from tensorflow.keras.models import load_model
-from tensorflow.keras.preprocessing import image
-
-# Flask utils
-from flask import Flask, redirect, url_for, request, render_template
-from werkzeug.utils import secure_filename
 
 # Define a flask app
 app = Flask(__name__)
 
 # Model saved with Keras model.save()
-MODEL_PATH ='tomato_disease_classification.h5'
+MODEL_PATH = 'tomato_disease_classification.h5'
 
 # Loading our trained model
 model = load_model(MODEL_PATH)
@@ -38,8 +32,8 @@ def model_predict(img_path, model):
 
     # Preprocessing the image
     x = image.img_to_array(img)
-    ## Scaling
-    x=x/255
+    # Scaling
+    x = x/255
     x = np.expand_dims(x, axis=0)
    
 
