@@ -3,6 +3,7 @@ $(document).ready(function () {
     $('.image-section').hide();
     $('.loader').hide();
     $('#result').hide();
+    var chart = null;//Used to store the chart object
 
     // Upload Preview
     function readURL(input) {
@@ -16,10 +17,12 @@ $(document).ready(function () {
             reader.readAsDataURL(input.files[0]);
         }
     }
+    
     $("#imageUpload").change(function () {
+        // Show image section and predict button if some image is uploaded in the form
         $('.image-section').show();
         $('#btn-predict').show();
-        $('#result').text('');
+        $('#pred-label').text('');
         $('#result').hide();
         readURL(this);
     });
@@ -45,8 +48,43 @@ $(document).ready(function () {
                 // Get and display the result
                 $('.loader').hide();
                 $('#result').fadeIn(600);
-                $('#result').text(' Result:  ' + data);
-                console.log('Success!');
+                $('#pred-label').text(' Result:  ' + data.prediction);
+
+                // Extract percentages data
+                var percentages = data.percentages;
+
+                // Prepare labels and values for the chart
+                var labels = Object.keys(percentages);
+                var values = Object.values(percentages);
+
+                // Destroy existing chart if it exists
+                if (chart) {
+                    chart.destroy();
+                }
+
+                // Create chart
+                chart = new Chart($('#chart'), {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Percentages',
+                            data: values,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
             },
         });
     });

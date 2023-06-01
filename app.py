@@ -27,41 +27,29 @@ model = load_model(MODEL_PATH)
 
 
 def model_predict(img_path, model):
-    print(img_path)
+    # Defining the labels
+    labels=['Bacterial spot', 'Early blight', 'Late blight', 'Leaf mold', 'Septoria leaf spot', 'Spider mites', 'Target spot', 'Yellow leaf curl virus', 'Mosaic virus', 'Healthy']
+    
+    # Loading and preprocessing the image
     img = image.load_img(img_path, target_size=(224, 224))
-
-    # Preprocessing the image
     x = image.img_to_array(img)
     # Scaling
     x = x/255
     x = np.expand_dims(x, axis=0)
-   
 
+    # Prediction
     preds = model.predict(x)
-    preds=np.argmax(preds, axis=1)
 
-
-    if preds==0:
-        preds="Bacterial spot"
-    elif preds==1:
-        preds="Early blight"
-    elif preds==2:
-        preds="Late blight"
-    elif preds==3:
-        preds="Leaf mold"
-    elif preds==4:
-        preds="Septoria leaf spot"
-    elif preds==5:
-        preds="Spider mites"
-    elif preds==6:
-        preds="Target spot"
-    elif preds==7:
-        preds="Yellow leaf curl virus"
-    elif preds==8:
-        preds="Mosaic virus"
-    else:
-        preds="Healthy"
-    return preds
+    # Generating output from predictions
+    most_probable_index = np.argmax(preds, axis=1).item()
+    percentages={}
+    for i in range(len(labels)):
+        percentages[labels[i]]=preds[0][i]*100
+    result={
+        'prediction':labels[most_probable_index],
+        'percentages':percentages
+    }
+    return result
 
 
 @app.route('/', methods=['GET'])
@@ -84,9 +72,10 @@ def upload():
 
         # Make prediction
         preds = model_predict(file_path, model)
-        result=preds
-        return result
-    return None
+        result = preds
+
+        return jsonify(result)
+    return jsonify({'error': 'Invalid request'})
 
 
 if __name__ == '__main__':
