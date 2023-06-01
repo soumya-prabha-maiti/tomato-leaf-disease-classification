@@ -1,9 +1,0 @@
-env/
-envcopyfromcotton/
-.ipynb_checkpoints/
-.vscode/
-dataset/
-uploads/*.jpg
-*.png
-Tomato_disease_prediction_model_ver1_inception.h5
-*.ipynb
