@@ -4,6 +4,7 @@ $(document).ready(function () {
     $('.loader').hide();
     $('#result').hide();
     var chart = null;//Used to store the chart object
+    var form_data = null;//Used to store the form data
 
     // Upload Preview
     function readURL(input) {
@@ -25,11 +26,11 @@ $(document).ready(function () {
         $('#pred-label').text('');
         $('#result').hide();
         readURL(this);
+        form_data = new FormData($('#upload-file')[0]);
     });
 
     // Predict
     $('#btn-predict').click(function () {
-        var form_data = new FormData($('#upload-file')[0]);
 
         // Show loading animation
         $(this).hide();
@@ -47,6 +48,7 @@ $(document).ready(function () {
             success: function (data) {
                 // Get and display the result
                 $('.loader').hide();
+                $('#btn-predict').show();
                 $('#result').fadeIn(600);
                 $('#pred-label').text(' Result:  ' + data.prediction);
 
