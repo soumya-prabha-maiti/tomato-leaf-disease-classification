@@ -1,8 +1,18 @@
+---
+title: Tomato Leaf Disease Classification
+emoji: 🔥
+colorFrom: yellow
+colorTo: green
+sdk: docker
+pinned: false
+license: mit
+app_port: 7680
+---
+
 # Tomato leaf disease classification with CNN
-![](images/project_main_ss.png)
+![](images/project_main_ss.jpg)
 
 
-<!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary>Table of Contents</summary>
   <ol>
@@ -22,8 +32,6 @@
 </details>
 
 
-
-<!-- ABOUT THE PROJECT -->
 ## About The Project
 Deep Learning is a powerful tool that can be used identify plant diseases. Here a Convolutional Neural Network(CNN) is used to predict the disease of a tomato leaf by using the images of tomato leaves as input.  
 
@@ -35,7 +43,6 @@ This project is built with the following libraries and frameworks
 * [Bootstrap](https://getbootstrap.com)
 
 
-<!-- DATASET -->
 ## Dataset
 The dataset used to train this model is taken from Kaggle.
 
@@ -44,14 +51,9 @@ Link : https://www.kaggle.com/kaustubhb999/tomatoleaf
 There are 10000 traininig images and 1000 test images belonging to 10 classes.
 
 
-
-<!-- MODEL -->
 ## Model
 ![](images/model_summary.png)
 
-
-
-<!-- TRAINING -->
 ## Training
 The model was trained with the EarlyStopping callback. It achieved anaccuracy of around 82% on the validation set
 
@@ -63,7 +65,16 @@ Plot of accuracy vs epochs:<br>
 ![](images/accuracy.png)
 
 
-<!-- GETTING STARTED -->
+## Web App Configuration
+
+The app uses environment variables for model loading. Copy `.env.example` to `.env` and adjust as needed.
+
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `MODEL_DIR` | Directory containing the model file | `/models` |
+| `MODEL_PATH` | Filenpath of the model within `MODEL_DIR` | `model-latest.h5` |
+
+
 ## Installation
 
 1. Install python if you don't have it already.
@@ -91,14 +102,6 @@ Plot of accuracy vs epochs:<br>
     py app.py
     ```
 
-
-<!-- LICENSE -->
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-
-
-<!-- CONTACT -->
-## Contact
-
-Project Link: [https://github.com/soumya-prabha-maiti/tomato-leaf-disease-classification](https://github.com/soumya-prabha-maiti/tomato-leaf-disease-classification)

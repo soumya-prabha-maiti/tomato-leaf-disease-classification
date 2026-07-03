@@ -3,6 +3,9 @@ import os
 import re
 import sys
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import numpy as np
 from flask import Flask, jsonify, redirect, render_template, request, url_for
 from tensorflow.compat.v1 import ConfigProto, InteractiveSession
@@ -19,11 +22,17 @@ session = InteractiveSession(config=config)
 # Define a flask app
 app = Flask(__name__)
 
-# Model saved with Keras model.save()
-MODEL_PATH = 'tomato_disease_classification.h5'
+# Model configuration via environment variables
+MODEL_DIR = os.environ.get('MODEL_DIR', '/models')
+MODEL_FILE = os.environ.get('MODEL_PATH', 'model-latest.h5')
+MODEL_FULL_PATH = os.path.join(MODEL_DIR, MODEL_FILE)
 
 # Loading our trained model
-model = load_model(MODEL_PATH)
+if not os.path.exists(MODEL_FULL_PATH):
+    sys.exit(f"ERROR: Model not found at {MODEL_FULL_PATH}. "
+             f"Set MODEL_DIR and/or MODEL_PATH environment variables.")
+
+model = load_model(MODEL_FULL_PATH)
 
 
 def model_predict(img_path, model):
@@ -44,7 +53,7 @@ def model_predict(img_path, model):
     most_probable_index = np.argmax(preds, axis=1).item()
     percentages={}
     for i in range(len(labels)):
-        percentages[labels[i]]=preds[0][i]*100
+        percentages[labels[i]]=float(preds[0][i]*100)
     result={
         'prediction':labels[most_probable_index],
         'percentages':percentages
