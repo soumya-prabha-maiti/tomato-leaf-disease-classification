@@ -1,33 +1,50 @@
 {% extends "base.html" %} {% block content %}
 
-<h2>Image Classifier</h2>
+<div class="card">
+    <div class="card-header">
+        <p class="card-description">Upload a tomato leaf image to detect diseases</p>
+    </div>
+    <div class="card-content">
+        <form id="upload-file" method="post" enctype="multipart/form-data">
+            <label for="imageUpload" class="upload-area" id="upload-area">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <span class="upload-text">Click to upload an image</span>
+                <span class="upload-hint">.png, .jpg, .jpeg</span>
+            </label>
+            <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg">
+        </form>
 
-<div>
-    <form id="upload-file" method="post" enctype="multipart/form-data">
-        <label for="imageUpload" class="upload-label">
-            Upload Image
-        </label>
-        <input type="file" name="file" id="imageUpload" accept=".png, .jpg, .jpeg">
-    </form>
-
-    <div class="image-section" style="display:none;">
-        <div class="img-preview">
-            <div id="imagePreview">
+        <div class="image-section" style="display:none;">
+            <div class="img-preview">
+                <div id="imagePreview"></div>
+            </div>
+            <div class="action-buttons">
+                <button type="button" class="btn-predict" id="btn-predict">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    Predict
+                </button>
+                <button type="button" class="btn-upload-new" id="btn-upload-new">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M3 21v-5h5"/></svg>
+                    New Image
+                </button>
             </div>
         </div>
-        <div>
-            <button type="button" class="btn btn-primary btn-lg " id="btn-predict">Predict!</button>
+
+        <div class="loader" style="display:none;">
+            <div class="spinner"></div>
+            <span>Analyzing...</span>
+        </div>
+
+        <div id="result" class="result-section">
+            <div class="result-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                <span id="pred-label"></span>
+            </div>
+            <div class="chart-container">
+                <canvas id="chart"></canvas>
+            </div>
         </div>
     </div>
-
-    <div class="loader" style="display:none;"></div>
-
-    <div id="result">
-        <h3 id="pred-label"> </h3>
-        <canvas id="chart"></canvas>
-    </div>
-
-
 </div>
 
 {% endblock %}
