@@ -5,12 +5,15 @@ $(document).ready(function () {
     $('#result').hide();
     var chart = null;
     var form_data = null;
+    var activeInput = null; // track which input has the file
 
     // Chart.js dark theme defaults
     Chart.defaults.color = '#a1a1aa';
     Chart.defaults.borderColor = '#27272a';
 
-    $("#imageUpload").change(function () {
+    // Both inputs trigger the same handler
+    $("#cameraInput, #galleryInput").change(function () {
+        activeInput = this;
         handleFile(this.files[0]);
     });
 
@@ -31,11 +34,11 @@ $(document).ready(function () {
 
     $uploadArea.on('drop', function (e) {
         var file = e.originalEvent.dataTransfer.files[0];
-        if (file && file.type.match(/image\/(png|jpe?g)/)) {
-            // Set the file on the input so FormData picks it up
+        if (file && file.type.match(/image\//)) {
             var dataTransfer = new DataTransfer();
             dataTransfer.items.add(file);
-            $('#imageUpload')[0].files = dataTransfer.files;
+            $('#galleryInput')[0].files = dataTransfer.files;
+            activeInput = $('#galleryInput')[0];
             handleFile(file);
         }
     });
@@ -56,16 +59,20 @@ $(document).ready(function () {
             $('#imagePreview').fadeIn(650);
         }
         reader.readAsDataURL(file);
-        form_data = new FormData($('#upload-file')[0]);
+        // Build FormData with the active input's file
+        form_data = new FormData();
+        form_data.append('file', file);
     }
 
-    // Upload new image — restore dropzone
+    // New Image — restore dropzone
     $('#btn-upload-new').click(function () {
         $('.image-section').hide();
         $('#result').hide();
         $('#upload-area').show();
-        $('#imageUpload').val('');
+        $('#cameraInput').val('');
+        $('#galleryInput').val('');
         form_data = null;
+        activeInput = null;
     });
 
     // Predict
